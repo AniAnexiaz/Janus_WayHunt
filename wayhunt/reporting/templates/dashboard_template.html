@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WayHunt Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<h1>WayHunt Security Dashboard</h1>
+
+<canvas id="typeChart"></canvas>
+
+<table border="1">
+<thead>
+<tr>
+<th>Timestamp</th>
+<th>Type</th>
+<th>URL</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody id="findings"></tbody>
+</table>
+
+<script>
+
+const data = __DATA__
+
+const ctx = document.getElementById('typeChart')
+
+const typeCounts = data.summary.type_counts
+
+new Chart(ctx,{
+ type:'bar',
+ data:{
+  labels:Object.keys(typeCounts),
+  datasets:[{
+    label:'Findings',
+    data:Object.values(typeCounts)
+  }]
+ }
+})
+
+const table = document.getElementById("findings")
+
+data.findings.forEach(f=>{
+ const row = document.createElement("tr")
+
+ row.innerHTML = `
+ <td>${f.timestamp}</td>
+ <td>${f.type}</td>
+ <td>${f.url}</td>
+ <td>${f.value}</td>
+ `
+ table.appendChild(row)
+})
+
+</script>
+
+</body>
+</html>
